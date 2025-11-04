@@ -1,0 +1,30 @@
+# symptom_checker.py
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Example symptom-to-condition mapping
+symptoms = [
+    "fever cough headache",
+    "headache nausea sensitivity to light",
+    "rash itch sneezing"
+]
+conditions = ["Flu", "Migraine", "Allergy"]
+
+# Convert text data to numerical format
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(symptoms)
+y = conditions
+
+# Train the model
+model = MultinomialNB()
+model.fit(X, y)
+
+# Test the model
+def predict_condition(user_input):
+    test_vec = vectorizer.transform([user_input])
+    return model.predict(test_vec)[0]
+
+# Example usage
+user_input = input("Enter your symptoms (e.g., fever cough headache): ")
+prediction = predict_condition(user_input)
+print("Predicted condition:", prediction)
